@@ -17,7 +17,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "products")
 @Getter @Setter @ToString @AllArgsConstructor @NoArgsConstructor
-public class Product {
+public class Product extends BaseEntity{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
