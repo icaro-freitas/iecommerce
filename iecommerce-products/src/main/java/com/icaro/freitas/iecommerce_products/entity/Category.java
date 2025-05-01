@@ -1,17 +1,13 @@
 package com.icaro.freitas.iecommerce_products.entity;
 
-import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -21,32 +17,21 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "tb_product")
+@Table(name = "tb_category")
 @Getter
 @Setter
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product extends BaseEntity {
+public class Category extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	@Column(columnDefinition = "TEXT")
-	private String description;
-	@Column(precision = 10, scale = 2)
-	private BigDecimal price;
-	private Integer quantity;
-	private String imageUrl;
-	@Column(unique = true)
-	private String slug;
-	@Column(nullable = false)
-	private Boolean active = true;
 
-	@ManyToMany
-	@JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
-	private Set<Category> categories = new HashSet<>();
+	@ManyToMany(mappedBy = "categories")
+	private Set<Product> products = new HashSet<>();
 
 	@Override
 	public int hashCode() {
@@ -61,7 +46,7 @@ public class Product extends BaseEntity {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Product other = (Product) obj;
+		Category other = (Category) obj;
 		return Objects.equals(id, other.id);
 	}
 
