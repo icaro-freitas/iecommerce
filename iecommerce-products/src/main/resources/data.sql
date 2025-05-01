@@ -1,0 +1,11 @@
+INSERT INTO tb_category(created_at, created_by, updated_at, updated_by, name) VALUES (NOW(),'icaro',null,null,'Eletrônicos');
+INSERT INTO tb_category(created_at, created_by, updated_at, updated_by, name) VALUES (NOW(),'icaro',null,null,'Livros');
+INSERT INTO tb_category(created_at, created_by, updated_at, updated_by, name) VALUES (NOW(),'icaro',null,null,'Esportes');
+
+INSERT INTO tb_product(created_at, created_by, updated_at, updated_by, name, description, price, quantity, image_url, slug, active) VALUES (NOW(),'icaro',null,null,'Notebook asus vivobook','É leve. É compacto. É o ASUS Vivobook Go 15. Projetado para torná-lo produtivo e mantê-lo entretido onde quer que você vá! Com processador AMD Ryzen 5 7520U de excelente desempenho, 16 GB de memória RAM LPDDR5 e até 512 GB de SSD , ele é perfeito para seu dia a dia.',2867.00, 50, 'img/notebook-asus-vivobook','notebook-asus-vivobook', 1);
+INSERT INTO tb_product(created_at, created_by, updated_at, updated_by, name, description, price, quantity, image_url, slug, active) VALUES (NOW(),'icaro',null,null,'As Crônicas de Nárnia','As Crônicas de Nárnia – Coleção de Luxo: O Leão, a Feiticeira e o Guarda-Roupa", de C.S. Lewis, é a edição de luxo de um dos livros mais icônicos da literatura infantil. Esta obra é a primeira da famosa série As Crônicas de Nárnia, que transporta os leitores para um mundo mágico e cheio de aventuras.',41.76, 100, 'img/as-cronicas-de-narnia','as-cronicas-de-narnia', 1);
+INSERT INTO tb_product(created_at, created_by, updated_at, updated_by, name, description, price, quantity, image_url, slug, active) VALUES (NOW(),'icaro',null,null,'Halter 4kg','O Halter Emborrachado Para Academia e Clínicas de Fisioterapia - Un - 4 Kg é a escolha ideal para quem busca qualidade e segurança em seus treinos. Com um design hexagonal, este halter proporciona uma melhor estabilidade durante os exercícios, evitando que role no chão. Fabricado em PVC e ferro, seu revestimento emborrachado garante uma aderência superior, permitindo que você mantenha o controle total durante suas atividades.',56.20, 200, 'img/halter-4kg','halter-4kg', 1);
+
+INSERT INTO tb_product_category(product_id,category_id) VALUES(1,1);
+INSERT INTO tb_product_category(product_id,category_id) VALUES(2,2);
+INSERT INTO tb_product_category(product_id,category_id) VALUES(3,3);
