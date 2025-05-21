@@ -1,4 +1,4 @@
-package entity;
+package com.icaro.freitas.iecommerce_products.entity;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
