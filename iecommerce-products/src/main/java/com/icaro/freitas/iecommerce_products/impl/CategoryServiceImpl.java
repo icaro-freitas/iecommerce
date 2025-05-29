@@ -11,7 +11,10 @@ import com.icaro.freitas.iecommerce_products.mapper.CategoryMapper;
 import com.icaro.freitas.iecommerce_products.repository.CategoryRepository;
 import com.icaro.freitas.iecommerce_products.service.ICategoryService;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class CategoryServiceImpl implements ICategoryService {
 
 	private CategoryRepository repository;
