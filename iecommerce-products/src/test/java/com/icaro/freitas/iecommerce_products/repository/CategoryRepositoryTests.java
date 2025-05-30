@@ -21,7 +21,7 @@ public class CategoryRepositoryTests {
 	private CategoryRepository repository;
 
 	@Test
-	void findAllshouldReturnProductsInPages() {
+	void findAllshouldReturnCategoriesInPages() {
 		Pageable pageable = PageRequest.of(0, 2);
 		Page<Category> page = repository.findAll(pageable);
 
@@ -31,7 +31,7 @@ public class CategoryRepositoryTests {
 	}
 
 	@Test
-	void findAllshouldReturnProductsOrderedByNameAscWhenSpecified() {
+	void findAllshouldReturnCategoriesOrderedByNameAscWhenSpecified() {
 		Pageable pageable = PageRequest.of(0, 4, Sort.by("name").ascending());
 		Page<Category> page = repository.findAll(pageable);
 		List<Category> categories = page.getContent();

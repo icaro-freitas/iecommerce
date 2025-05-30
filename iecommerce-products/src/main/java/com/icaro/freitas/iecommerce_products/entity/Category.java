@@ -37,6 +37,11 @@ public class Category extends BaseEntity {
 	@ManyToMany(mappedBy = "categories")
 	private Set<Product> products = new HashSet<>();
 
+	public Category(Long id, String name) {
+		this.id = id;
+		this.name = name;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, name);
