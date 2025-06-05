@@ -1,4 +1,4 @@
-package com.icaro.freitas.iecommerce_products.impl;
+package com.icaro.freitas.iecommerce_products.service.impl;
 
 import java.util.List;
 

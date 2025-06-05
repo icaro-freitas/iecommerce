@@ -15,42 +15,42 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import com.icaro.freitas.iecommerce_products.dto.CategoryDto;
-import com.icaro.freitas.iecommerce_products.entity.Category;
-import com.icaro.freitas.iecommerce_products.repository.CategoryRepository;
-import com.icaro.freitas.iecommerce_products.service.impl.CategoryServiceImpl;
-import com.icaro.freitas.iecommerce_products.testutil.CategoryFactory;
+import com.icaro.freitas.iecommerce_products.dto.ProductDto;
+import com.icaro.freitas.iecommerce_products.entity.Product;
+import com.icaro.freitas.iecommerce_products.repository.ProductRepository;
+import com.icaro.freitas.iecommerce_products.service.impl.ProductServiceImpl;
+import com.icaro.freitas.iecommerce_products.testutil.ProductFactory;
 
 @ExtendWith(MockitoExtension.class)
-public class CategoryServiceImplTests {
-
+public class ProductServiceImplTests {
+	
 	@Mock
-	private CategoryRepository repository;
-
+	private ProductRepository repository;
+	
 	@InjectMocks
-	private CategoryServiceImpl service;
-
-	private List<Category> list;
-	private Page<Category> page;
+	private ProductServiceImpl service;
+	
+	private List<Product> list;
+	private Page<Product> page;
 
 	@BeforeEach
 	private void setUp() throws Exception {
 
-		list = CategoryFactory.createCategoryList();
+		list = ProductFactory.createProductList();
 		page = new PageImpl<>(list);
 		Mockito.when(repository.findAll(Mockito.any(Pageable.class))).thenReturn(page);
 	}
 
 	@Test
-	public void findAllShouldReturnCategoryDtoPagedList() {
+	public void findAllShouldReturnProductDtoPagedList() {
 
 		Pageable pageable = PageRequest.of(0, 10);
 
-		Page<CategoryDto> result = service.findAll(pageable);
+		Page<ProductDto> result = service.findAll(pageable);
 
 		Assertions.assertEquals(result.getTotalElements(), list.size());
 		Assertions.assertEquals(result.getContent().get(0).getId(), list.get(0).getId());
 		Assertions.assertEquals(result.getContent().get(0).getName(), list.get(0).getName());
-	}
+	}	
 
 }

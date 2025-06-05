@@ -3,7 +3,6 @@ package com.icaro.freitas.iecommerce_products.entity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import com.icaro.freitas.iecommerce_products.entity.Product;
 import com.icaro.freitas.iecommerce_products.testutil.ProductFactory;
 
 public class ProductTests {

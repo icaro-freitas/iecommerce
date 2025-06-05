@@ -1,8 +1,11 @@
 package com.icaro.freitas.iecommerce_products.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,85 +15,92 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import com.icaro.freitas.iecommerce_products.entity.Category;
 import com.icaro.freitas.iecommerce_products.entity.Product;
 
 @DataJpaTest
 public class ProductRepositoryTests {
-	
+
 	@Autowired
 	private ProductRepository repository;
-	
+
 	@Test
-    void findAllshouldReturnProductsInPages() {
-        Pageable pageable = PageRequest.of(0, 2); 
-        Page<Product> page = repository.findAll(pageable);
+	void findAllshouldReturnProductsInPages() {
+		Pageable pageable = PageRequest.of(0, 2);
+		Page<Product> page = repository.findAll(pageable);
 
-        assertEquals(2, page.getContent().size());
-        assertEquals(4, page.getTotalPages());
-        assertEquals(8, page.getTotalElements());
-    }
+		assertEquals(2, page.getContent().size());
+		assertEquals(4, page.getTotalPages());
+		assertEquals(8, page.getTotalElements());
+	}
 
-    @Test
-    void findAllshouldReturnProductsOrderedByNameAscWhenSpecified() {
-        Pageable pageable = PageRequest.of(0, 5, Sort.by("name").ascending());
-        Page<Product> page = repository.findAll(pageable);
-        List<Product> products = page.getContent();
-        List<String> productNames = products.stream()
-                                     .map(Product::getName)
-                                     .toList();
+	@Test
+	void findAllshouldReturnProductsWithCategories() {
+		Pageable pageable = PageRequest.of(0, 2);
+		Page<Product> page = repository.findAll(pageable);
 
-        assertEquals(List.of("As Crônicas de Nárnia", "Ducha Jet", "Geladeira Philco", "Halter 4kg", "Livro Harry Potter e a Pedra Filosofal"), productNames);
-    }
-    
-    @Test
-    void findAllshouldReturnProductsOrderedByDescriptionAscWhenSpecified() {
-        Pageable pageable = PageRequest.of(0, 5, Sort.by("description").ascending());
-        Page<Product> page = repository.findAll(pageable);
-        List<Product> products = page.getContent();
-        List<String> productNames = products.stream()
-                                     .map(Product::getName)
-                                     .toList();
+		List<Product> products = page.getContent();
 
-        assertEquals(List.of("Livro Harry Potter e a Pedra Filosofal", "As Crônicas de Nárnia", "Ducha Jet", "Geladeira Philco", "Samsung Galaxy A35"), productNames);
-    }
+		Set<Category> categories = products.get(0).getCategories();
 
-    @Test
-    void findAllshouldReturnProductsOrderedByPriceAscWhenSpecified() {
-        Pageable pageable = PageRequest.of(0, 5, Sort.by("price").ascending());
-        Page<Product> page = repository.findAll(pageable);
-        List<Product> products = page.getContent();
-        List<String> productNames = products.stream()
-                .map(Product::getName)
-                .toList();
+		assertFalse(categories.isEmpty(), "Product should have at least one category");
+		assertTrue(categories.contains(new Category(1L, "Eletrônicos")),
+				"The first product should have the correct category");
+	}
 
-        assertEquals(List.of("Livro Harry Potter e a Pedra Filosofal", "As Crônicas de Nárnia", "Halter 4kg", "Torradeira Elétrica", "Ducha Jet"), productNames);
-    }
-    
-    @Test
-    void findAllshouldReturnProductsOrderedByQuantityAscWhenSpecified() {
-        Pageable pageable = PageRequest.of(0, 5, Sort.by("quantity").ascending());
-        Page<Product> page = repository.findAll(pageable);
-        List<Product> products = page.getContent();
-        List<String> productNames = products.stream()
-                .map(Product::getName)
-                .toList();
+	@Test
+	void findAllshouldReturnProductsOrderedByNameAscWhenSpecified() {
+		Pageable pageable = PageRequest.of(0, 5, Sort.by("name").ascending());
+		Page<Product> page = repository.findAll(pageable);
+		List<Product> products = page.getContent();
+		List<String> productNames = products.stream().map(Product::getName).toList();
 
-        assertEquals(List.of("Geladeira Philco", "Notebook asus vivobook", "Torradeira Elétrica", "Samsung Galaxy A35", "As Crônicas de Nárnia"), productNames);
-    }
-    
-    @Test
-    void findAllshouldReturnProductsOrderedByActiveAscWhenSpecified() {
-        Pageable pageable = PageRequest.of(0, 5,  Sort.by(
-                Sort.Order.asc("active"),
-                Sort.Order.desc("name")
-            ));
-        Page<Product> page = repository.findAll(pageable);
-        List<Product> products = page.getContent();
-        List<String> productNames = products.stream()
-                .map(Product::getName)
-                .toList();
+		assertEquals(List.of("As Crônicas de Nárnia", "Ducha Jet", "Geladeira Philco", "Halter 4kg",
+				"Livro Harry Potter e a Pedra Filosofal"), productNames);
+	}
 
-        assertEquals(List.of("Livro Harry Potter e a Pedra Filosofal", "Torradeira Elétrica", "Samsung Galaxy A35", "Notebook asus vivobook", "Halter 4kg"), productNames);
-    }
+	@Test
+	void findAllshouldReturnProductsOrderedByDescriptionAscWhenSpecified() {
+		Pageable pageable = PageRequest.of(0, 5, Sort.by("description").ascending());
+		Page<Product> page = repository.findAll(pageable);
+		List<Product> products = page.getContent();
+		List<String> productNames = products.stream().map(Product::getName).toList();
+
+		assertEquals(List.of("Livro Harry Potter e a Pedra Filosofal", "As Crônicas de Nárnia", "Ducha Jet",
+				"Geladeira Philco", "Samsung Galaxy A35"), productNames);
+	}
+
+	@Test
+	void findAllshouldReturnProductsOrderedByPriceAscWhenSpecified() {
+		Pageable pageable = PageRequest.of(0, 5, Sort.by("price").ascending());
+		Page<Product> page = repository.findAll(pageable);
+		List<Product> products = page.getContent();
+		List<String> productNames = products.stream().map(Product::getName).toList();
+
+		assertEquals(List.of("Livro Harry Potter e a Pedra Filosofal", "As Crônicas de Nárnia", "Halter 4kg",
+				"Torradeira Elétrica", "Ducha Jet"), productNames);
+	}
+
+	@Test
+	void findAllshouldReturnProductsOrderedByQuantityAscWhenSpecified() {
+		Pageable pageable = PageRequest.of(0, 5, Sort.by("quantity").ascending());
+		Page<Product> page = repository.findAll(pageable);
+		List<Product> products = page.getContent();
+		List<String> productNames = products.stream().map(Product::getName).toList();
+
+		assertEquals(List.of("Geladeira Philco", "Notebook asus vivobook", "Torradeira Elétrica", "Samsung Galaxy A35",
+				"As Crônicas de Nárnia"), productNames);
+	}
+
+	@Test
+	void findAllshouldReturnProductsOrderedByActiveAscWhenSpecified() {
+		Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Order.asc("active"), Sort.Order.desc("name")));
+		Page<Product> page = repository.findAll(pageable);
+		List<Product> products = page.getContent();
+		List<String> productNames = products.stream().map(Product::getName).toList();
+
+		assertEquals(List.of("Livro Harry Potter e a Pedra Filosofal", "Torradeira Elétrica", "Samsung Galaxy A35",
+				"Notebook asus vivobook", "Halter 4kg"), productNames);
+	}
 
 }
