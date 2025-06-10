@@ -23,13 +23,13 @@ import com.icaro.freitas.iecommerce_products.testutil.ProductFactory;
 
 @ExtendWith(MockitoExtension.class)
 public class ProductServiceImplTests {
-	
+
 	@Mock
 	private ProductRepository repository;
-	
+
 	@InjectMocks
 	private ProductServiceImpl service;
-	
+
 	private List<Product> list;
 	private Page<Product> page;
 
@@ -41,16 +41,21 @@ public class ProductServiceImplTests {
 		Mockito.when(repository.findAll(Mockito.any(Pageable.class))).thenReturn(page);
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	@Test
 	public void findAllShouldReturnProductDtoPagedList() {
-
 		Pageable pageable = PageRequest.of(0, 10);
 
 		Page<ProductDto> result = service.findAll(pageable);
+		Product expected = list.get(0);
+		ProductDto actual = result.getContent().get(0);
+		String actualCategoryName = actual.getCategories().get(0).getName();
 
-		Assertions.assertEquals(result.getTotalElements(), list.size());
-		Assertions.assertEquals(result.getContent().get(0).getId(), list.get(0).getId());
-		Assertions.assertEquals(result.getContent().get(0).getName(), list.get(0).getName());
-	}	
+		Assertions.assertEquals(list.size(), result.getTotalElements(), "Total elements mismatch");
+		Assertions.assertEquals(expected.getId(), actual.getId(), "Product ID mismatch");
+		Assertions.assertEquals(expected.getName(), actual.getName(), "Product name mismatch");
+		Assertions.assertTrue(expected.getCategories().contains(actualCategoryName),
+				"Expected category list to contain: " + actualCategoryName);
+	}
 
 }

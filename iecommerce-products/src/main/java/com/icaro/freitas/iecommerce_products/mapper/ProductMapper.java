@@ -10,7 +10,7 @@ public class ProductMapper {
 	
 	public static ProductDto toDto(Product product) {
 		
-		List<CategoryDto> categoryDTOs = product.getCategories().stream()
+		List<CategoryDto> categoryDtos = product.getCategories().stream()
 		        .map(c -> CategoryMapper.toDto(c))
 		        .toList();
 
@@ -23,7 +23,7 @@ public class ProductMapper {
 		        product.getImageUrl(),
 		        product.getSlug(),
 		        product.getActive(),
-		        categoryDTOs
+		        categoryDtos
 		    );
 	}
 

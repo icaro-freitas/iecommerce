@@ -1,8 +1,9 @@
 package com.icaro.freitas.iecommerce_products.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.List;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,14 +44,16 @@ public class CategoryServiceImplTests {
 
 	@Test
 	public void findAllShouldReturnCategoryDtoPagedList() {
+	    Pageable pageable = PageRequest.of(0, 10);
+	    Page<CategoryDto> result = service.findAll(pageable);
+	    
+	    assertEquals(list.size(), result.getTotalElements(), "Total number of elements mismatch");
 
-		Pageable pageable = PageRequest.of(0, 10);
+	    Category expected = list.get(0);
+	    CategoryDto actual = result.getContent().get(0);
 
-		Page<CategoryDto> result = service.findAll(pageable);
-
-		Assertions.assertEquals(result.getTotalElements(), list.size());
-		Assertions.assertEquals(result.getContent().get(0).getId(), list.get(0).getId());
-		Assertions.assertEquals(result.getContent().get(0).getName(), list.get(0).getName());
+	    assertEquals(expected.getId(), actual.getId(), "Category ID mismatch");
+	    assertEquals(expected.getName(), actual.getName(), "Category name mismatch");
 	}
 
 }

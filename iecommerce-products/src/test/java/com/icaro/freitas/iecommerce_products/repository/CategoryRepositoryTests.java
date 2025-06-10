@@ -21,13 +21,15 @@ public class CategoryRepositoryTests {
 	private CategoryRepository repository;
 
 	@Test
-	void findAllshouldReturnCategoriesInPages() {
-		Pageable pageable = PageRequest.of(0, 2);
-		Page<Category> page = repository.findAll(pageable);
+	void findAllShouldReturnCategoriesInPages() {
+	    Pageable pageable = PageRequest.of(0, 2);
+	    Page<Category> page = repository.findAll(pageable);
 
-		assertEquals(2, page.getContent().size());
-		assertEquals(2, page.getTotalPages());
-		assertEquals(4, page.getTotalElements());
+	    List<Category> categories = page.getContent();
+
+	    assertEquals(2, categories.size(), "Expected 2 categories on the first page");
+	    assertEquals(2, page.getTotalPages(), "Expected total of 2 pages");
+	    assertEquals(4, page.getTotalElements(), "Expected total of 4 categories");
 	}
 
 	@Test
@@ -35,9 +37,10 @@ public class CategoryRepositoryTests {
 		Pageable pageable = PageRequest.of(0, 4, Sort.by("name").ascending());
 		Page<Category> page = repository.findAll(pageable);
 		List<Category> categories = page.getContent();
-		List<String> categoryNames = categories.stream().map(Category::getName).toList();
+		List<String> expectedCategoryNames = List.of("Eletrodomésticos", "Eletrônicos", "Esportes", "Livros");
+		List<String> actualCategoryNames = categories.stream().map(Category::getName).toList();
 
-		assertEquals(List.of("Eletrodomésticos", "Eletrônicos", "Esportes", "Livros"), categoryNames);
+		assertEquals(expectedCategoryNames, actualCategoryNames, "Categories are not sorted by name ascending as expected");
 	}
 
 }
