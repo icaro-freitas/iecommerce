@@ -9,7 +9,7 @@ Projeto pessoal de e-commerce backend, utilizando arquitetura de microsserviços
 ## Tecnologias utilizadas
 
 - **Java 21** — Linguagem principal utilizada para todos os microsserviços.
-- **Spring Boot 3.4.5** — Framework backend utilizado.
+- **Spring Boot 3.4.6** — Framework backend utilizado.
 - **Spring Cloud** — Comunicação e integração entre microsserviços.
 - **PostgreSQL** — Banco de dados relacional para armazenamento dos dados dos serviços products, orders e clients.
 - **RabbitMQ** — Mensageria assíncrona, funcionará como broker de mensagens. O serviço orders enviará informações de um pedido que servirão para gerar mensagens e emails de confimação e também para reduzir o estoque do serviço products.  
@@ -23,7 +23,25 @@ Projeto pessoal de e-commerce backend, utilizando arquitetura de microsserviços
 
 ## Executando o projeto
 
+Para executar o projeto, primeiro é necessário entrar na pasta de um microsserviço, o que pode ser feito por exemplo para a pasta **iecommerce-products/** com o seguinte comando:
+
+```bash
+cd iecommerce-products/
+```
+
+O projeto pode ser executado com o seguinte comando na pasta do microsserviço selecionado:
+
+```bash
+mvn spring-boot:run
+```
+
 ## Testes
+
+Os testes podem ser executados com o seguinte comando na pasta do microsserviço selecionado:
+
+```bash
+mvn test
+```
 
 ## Contato
 
