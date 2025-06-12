@@ -20,6 +20,7 @@ Projeto pessoal de e-commerce backend, utilizando arquitetura de microsserviços
 - **OpenTelemetry + Prometheus + Grafana + Loki + Tempo + Alloy** — Observabilidade e monitoramento dos microsserviços, realizando o armazenamento e integração de Logs, rastreamento distribuído, visualização de métricas e controle de performance.
 - **Docker** - Conteinerização das aplicações para realização de testes com Docker compose e para produção com kubernetes.
 - **Kubernetes** - Orquestração de contêineres para a produção e testes.
+- **OpenAPI** - OpenAPI é utilizada para documentação dos microsserviços.
 
 ## Executando o projeto
 
@@ -42,6 +43,12 @@ Os testes podem ser executados com o seguinte comando na pasta do microsserviço
 ```bash
 mvn test
 ```
+
+## Documentação
+
+A documentação para o endpoint pode ser encontrada no seguinte endereço após a execução do projeto:
+
+[http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 
 ## Contato
 
