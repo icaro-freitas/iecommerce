@@ -9,7 +9,7 @@ Projeto pessoal de e-commerce backend, utilizando arquitetura de microsserviços
 ## Tecnologias utilizadas
 
 - **Java 21** — Linguagem principal utilizada para todos os microsserviços.
-- **Spring Boot 3.4.5** — Framework backend utilizado.
+- **Spring Boot 3.4.6** — Framework backend utilizado.
 - **Spring Cloud** — Comunicação e integração entre microsserviços.
 - **PostgreSQL** — Banco de dados relacional para armazenamento dos dados dos serviços products, orders e clients.
 - **RabbitMQ** — Mensageria assíncrona, funcionará como broker de mensagens. O serviço orders enviará informações de um pedido que servirão para gerar mensagens e emails de confimação e também para reduzir o estoque do serviço products.  
@@ -20,10 +20,35 @@ Projeto pessoal de e-commerce backend, utilizando arquitetura de microsserviços
 - **OpenTelemetry + Prometheus + Grafana + Loki + Tempo + Alloy** — Observabilidade e monitoramento dos microsserviços, realizando o armazenamento e integração de Logs, rastreamento distribuído, visualização de métricas e controle de performance.
 - **Docker** - Conteinerização das aplicações para realização de testes com Docker compose e para produção com kubernetes.
 - **Kubernetes** - Orquestração de contêineres para a produção e testes.
+- **OpenAPI** - OpenAPI é utilizada para documentação dos microsserviços.
 
 ## Executando o projeto
 
+Para executar o projeto, primeiro é necessário entrar na pasta de um microsserviço, o que pode ser feito por exemplo para a pasta **iecommerce-products/** com o seguinte comando:
+
+```bash
+cd iecommerce-products/
+```
+
+O projeto pode ser executado com o seguinte comando na pasta do microsserviço selecionado:
+
+```bash
+mvn spring-boot:run
+```
+
 ## Testes
+
+Os testes podem ser executados com o seguinte comando na pasta do microsserviço selecionado:
+
+```bash
+mvn test
+```
+
+## Documentação
+
+A documentação para o endpoint pode ser encontrada no seguinte endereço após a execução do projeto:
+
+[http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 
 ## Contato
 
