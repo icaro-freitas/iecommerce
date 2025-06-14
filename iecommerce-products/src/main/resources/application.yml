@@ -14,7 +14,9 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     defer-datasource-initialization: true
-    hibernate:
-      ddl-auto: update
+      
     show-sql: true   
     open-in-view: false 
+    properties:
+      hibernate:
+        format_sql: true

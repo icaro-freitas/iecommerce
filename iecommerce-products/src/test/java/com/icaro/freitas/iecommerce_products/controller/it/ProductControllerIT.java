@@ -25,10 +25,10 @@ public class ProductControllerIT {
 
 	@Test
 	public void findAllShouldReturnPage() throws Exception {
-		
+
 		final Integer productsListExpectedLength = 8;
 		final Long firstProductExpectedId = 1L;
-		final String firstProductExpectedName =  "Notebook asus vivobook";
+		final String firstProductExpectedName = "Notebook asus vivobook";
 		final BigDecimal firstProductExpectedPrice = new BigDecimal("2867.0");
 		final String firstProductExpectedImageUrl = "img/notebook-asus-vivobook";
 		final String firstProductExpectedFirstCategoryName = "Eletrônicos";
@@ -43,12 +43,10 @@ public class ProductControllerIT {
 		result.andExpect(jsonPath("$.content[0].imageUrl").value(firstProductExpectedImageUrl));
 		result.andExpect(jsonPath("$.content[0].categories[0].name").value(firstProductExpectedFirstCategoryName));
 	}
-	
+
 	@Test
 	public void findAllShouldReturnBadRequestWhenInvalidSortParamIsGiven() throws Exception {
-	    mockMvc.perform(get("/api/v1/products")
-	            .param("sort", "unknownField,asc"))
-	           .andExpect(status().isBadRequest());
+		mockMvc.perform(get("/api/v1/products").param("sort", "unknownField,asc")).andExpect(status().isBadRequest());
 	}
 
 }
