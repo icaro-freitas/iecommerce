@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +25,7 @@ public class ProductServiceImpl implements IProductService {
 
 	@Transactional(readOnly = true)
 	@Override
-	public Page<ProductDto> findAll(Pageable pageable) {
+	public Page<ProductDto> findAll(Specification<Product> spec,Pageable pageable) {
 		Page<Product> productPage = repository.findAll(pageable);
 
 		List<ProductDto> dtoList = productPage.getContent().stream().map(p -> ProductMapper.toDto(p)).toList();
