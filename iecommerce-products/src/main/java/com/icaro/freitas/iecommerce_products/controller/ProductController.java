@@ -5,10 +5,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.icaro.freitas.iecommerce_products.dto.ProductDto;
+import com.icaro.freitas.iecommerce_products.dto.ProductFilterDto;
 import com.icaro.freitas.iecommerce_products.dto.StandardErrorDto;
 import com.icaro.freitas.iecommerce_products.service.IProductService;
 
@@ -34,9 +36,9 @@ public class ProductController {
 		    @ApiResponse(responseCode = "400", description = "HTTP Status Internal Bad Request", content = @Content(schema = @Schema(implementation = StandardErrorDto.class))),
 			@ApiResponse(responseCode = "500", description = "HTTP Status Internal Server Error", content = @Content(schema = @Schema(implementation = StandardErrorDto.class))) })
 	@GetMapping
-	public ResponseEntity<Page<ProductDto>> findAll(Pageable pageable) {
+	public ResponseEntity<Page<ProductDto>> findAll(@ModelAttribute ProductFilterDto filter, Pageable pageable) {
 		
-		Page<ProductDto> products = service.findAll(pageable);
+		Page<ProductDto> products = service.findAll(filter, pageable);
 		
 		return ResponseEntity.ok(products);
 		

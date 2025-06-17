@@ -16,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import com.icaro.freitas.iecommerce_products.dto.ProductDto;
+import com.icaro.freitas.iecommerce_products.dto.ProductFilterDto;
 import com.icaro.freitas.iecommerce_products.entity.Category;
 import com.icaro.freitas.iecommerce_products.entity.Product;
 import com.icaro.freitas.iecommerce_products.repository.ProductRepository;
@@ -45,8 +46,10 @@ public class ProductServiceImplTests {
 	@Test
 	public void findAllShouldReturnProductDtoPagedList() {
 		Pageable pageable = PageRequest.of(0, 10);
+		
+		ProductFilterDto filter = new ProductFilterDto();
 
-		Page<ProductDto> result = service.findAll(pageable);
+		Page<ProductDto> result = service.findAll(filter, pageable);
 		Product expected = list.get(0);
 		ProductDto actual = result.getContent().get(0);
 		String actualCategoryName = actual.getCategories().get(0).getName();

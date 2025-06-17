@@ -17,6 +17,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class ProductFilterDto {
+
 	private String name;
 	private String description;
 	private BigDecimal minPrice;
