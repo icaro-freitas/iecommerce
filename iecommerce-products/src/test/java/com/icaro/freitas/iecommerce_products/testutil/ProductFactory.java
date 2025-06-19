@@ -25,9 +25,9 @@ public class ProductFactory {
 		
 		Set<Category> categories1 = Set.of(new Category(1L, "Eletrônicos"));
 		
-		Set<Category> categories2 = Set.of(new Category(1L, "Livros"));
+		Set<Category> categories2 = Set.of(new Category(2L, "Livros"));
 		
-		Set<Category> categories3 = Set.of(new Category(1L, "Esportes"));
+		Set<Category> categories3 = Set.of(new Category(3L, "Esportes"));
 		
 		Product product1 = new Product(1L, "Notebook asus vivobook", "É leve. É compacto. É o ASUS",
 				new BigDecimal("2867.00"), 50, "img/notebook-asus-vivobook", "notebook-asus-vivobook", true,

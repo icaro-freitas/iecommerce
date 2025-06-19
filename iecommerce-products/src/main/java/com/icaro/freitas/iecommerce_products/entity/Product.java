@@ -25,7 +25,7 @@ import lombok.ToString;
 @Table(name = "tb_product")
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "categories")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product extends BaseEntity {
@@ -50,6 +50,8 @@ public class Product extends BaseEntity {
 	@ManyToMany
 	@JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private Set<Category> categories = new HashSet<>();
+	
+	
 
 	@Override
 	public int hashCode() {
@@ -77,6 +79,6 @@ public class Product extends BaseEntity {
 			throw new IllegalArgumentException("Cannot decrease quantity: not enough stock.");
 		}
 		this.quantity -= amount;
-	};
-
+	}
+	
 }
