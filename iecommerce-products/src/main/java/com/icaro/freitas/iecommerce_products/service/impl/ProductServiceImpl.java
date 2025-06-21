@@ -26,6 +26,7 @@ public class ProductServiceImpl implements IProductService {
 	@Override
 	public Page<ProductDto> findAll(ProductFilterDto filter, Pageable pageable) {
 		Specification<Product> spec = Specification.where(ProductSpecifications.nameContains(filter.getName()))
+				.and(ProductSpecifications.descriptionContains(filter.getDescription()))
 				.and(ProductSpecifications.minPrice(filter.getMinPrice()))
 				.and(ProductSpecifications.maxPrice(filter.getMaxPrice()))
 				.and(ProductSpecifications.minQuantity(filter.getMinQuantity()))

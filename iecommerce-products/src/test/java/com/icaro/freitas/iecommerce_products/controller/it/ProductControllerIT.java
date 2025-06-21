@@ -45,8 +45,175 @@ public class ProductControllerIT {
 	}
 
 	@Test
+	public void findAllShouldReturnPageSortedByNameWhenSpecified() throws Exception {
+
+		final Long firstProductExpectedId = 2L;
+		final String firstProductExpectedName = "As Crônicas de Nárnia";
+
+		ResultActions result = mockMvc
+				.perform(get("/api/v1/products").param("sort", "name,asc").accept(MediaType.APPLICATION_JSON));
+
+		result.andExpect(status().isOk());
+		result.andExpect(jsonPath("$.content[0].id").value(firstProductExpectedId));
+		result.andExpect(jsonPath("$.content[0].name").value(firstProductExpectedName));
+	}
+
+	@Test
 	public void findAllShouldReturnBadRequestWhenInvalidSortParamIsGiven() throws Exception {
 		mockMvc.perform(get("/api/v1/products").param("sort", "unknownField,asc")).andExpect(status().isBadRequest());
+	}
+	
+	@Test
+	public void findAllShouldReturnPageFilteredByGivenName() throws Exception {
+		
+		final Integer productsListExpectedLength = 1;
+		final Long firstProductExpectedId = 1L;
+		final String firstProductExpectedName = "Notebook asus vivobook";
+
+		ResultActions result = mockMvc
+				.perform(get("/api/v1/products").param("name", "asus").accept(MediaType.APPLICATION_JSON));
+
+		result.andExpect(status().isOk());		
+		result.andExpect(jsonPath("$.content.length()").value(productsListExpectedLength));
+		result.andExpect(jsonPath("$.content[0].id").value(firstProductExpectedId));
+		result.andExpect(jsonPath("$.content[0].name").value(firstProductExpectedName));
+		
+	}
+	
+	@Test
+	public void findAllShouldReturnPageFilteredByGivenDescription() throws Exception {
+		
+		final Integer productsListExpectedLength = 1;
+		final Long firstProductExpectedId = 1L;
+		final String firstProductExpectedName = "Notebook asus vivobook";
+
+		ResultActions result = mockMvc
+				.perform(get("/api/v1/products").param("description", "ASUS").accept(MediaType.APPLICATION_JSON));
+
+		result.andExpect(status().isOk());		
+		result.andExpect(jsonPath("$.content.length()").value(productsListExpectedLength));
+		result.andExpect(jsonPath("$.content[0].id").value(firstProductExpectedId));
+		result.andExpect(jsonPath("$.content[0].name").value(firstProductExpectedName));
+		
+	}
+	
+	@Test
+	public void findAllShouldReturnPageFilteredByGivenMinPrice() throws Exception {
+		
+		final Integer productsListExpectedLength = 1;
+		final Long firstProductExpectedId = 5L;
+		final String firstProductExpectedName = "Geladeira Philco";
+
+		ResultActions result = mockMvc
+				.perform(get("/api/v1/products").param("minPrice", "5000.00").accept(MediaType.APPLICATION_JSON));
+
+		result.andExpect(status().isOk());		
+		result.andExpect(jsonPath("$.content.length()").value(productsListExpectedLength));
+		result.andExpect(jsonPath("$.content[0].id").value(firstProductExpectedId));
+		result.andExpect(jsonPath("$.content[0].name").value(firstProductExpectedName));
+		
+	}
+	
+	@Test
+	public void findAllShouldReturnPageFilteredByGivenMaxPrice() throws Exception {
+		
+		final Integer productsListExpectedLength = 1;
+		final Long firstProductExpectedId = 8L;
+		final String firstProductExpectedName = "Livro Harry Potter e a Pedra Filosofal";
+
+		ResultActions result = mockMvc
+				.perform(get("/api/v1/products").param("maxPrice", "41.57").accept(MediaType.APPLICATION_JSON));
+
+		result.andExpect(status().isOk());		
+		result.andExpect(jsonPath("$.content.length()").value(productsListExpectedLength));
+		result.andExpect(jsonPath("$.content[0].id").value(firstProductExpectedId));
+		result.andExpect(jsonPath("$.content[0].name").value(firstProductExpectedName));
+		
+	}
+	
+	@Test
+	public void findAllShouldReturnPageFilteredByGivenMinQuantity() throws Exception {
+		
+		final Integer productsListExpectedLength = 1;
+		final Long firstProductExpectedId = 3L;
+		final String firstProductExpectedName = "Halter 4kg";
+
+		ResultActions result = mockMvc
+				.perform(get("/api/v1/products").param("minQuantity", "195").accept(MediaType.APPLICATION_JSON));
+
+		result.andExpect(status().isOk());		
+		result.andExpect(jsonPath("$.content.length()").value(productsListExpectedLength));
+		result.andExpect(jsonPath("$.content[0].id").value(firstProductExpectedId));
+		result.andExpect(jsonPath("$.content[0].name").value(firstProductExpectedName));
+		
+	}
+	
+	@Test
+	public void findAllShouldReturnPageFilteredByGivenMaxQuantity() throws Exception {
+		
+		final Integer productsListExpectedLength = 1;
+		final Long firstProductExpectedId = 5L;
+		final String firstProductExpectedName = "Geladeira Philco";
+
+		ResultActions result = mockMvc
+				.perform(get("/api/v1/products").param("maxQuantity", "31").accept(MediaType.APPLICATION_JSON));
+
+		result.andExpect(status().isOk());		
+		result.andExpect(jsonPath("$.content.length()").value(productsListExpectedLength));
+		result.andExpect(jsonPath("$.content[0].id").value(firstProductExpectedId));
+		result.andExpect(jsonPath("$.content[0].name").value(firstProductExpectedName));
+		
+	}
+	
+	@Test
+	public void findAllShouldReturnPageFilteredByActiveParameterWithTrueValue() throws Exception {
+		
+		final Integer productsListExpectedLength = 7;
+		final Long firstProductExpectedId = 1L;
+		final String firstProductExpectedName = "Notebook asus vivobook";
+
+		ResultActions result = mockMvc
+				.perform(get("/api/v1/products").param("active", "true").accept(MediaType.APPLICATION_JSON));
+
+		result.andExpect(status().isOk());		
+		result.andExpect(jsonPath("$.content.length()").value(productsListExpectedLength));
+		result.andExpect(jsonPath("$.content[0].id").value(firstProductExpectedId));
+		result.andExpect(jsonPath("$.content[0].name").value(firstProductExpectedName));
+		
+	}
+	
+	@Test
+	public void findAllShouldReturnPageFilteredByActiveParameterWithFalseValue() throws Exception {
+		
+		final Integer productsListExpectedLength = 1;
+		final Long firstProductExpectedId = 8L;
+		final String firstProductExpectedName = "Livro Harry Potter e a Pedra Filosofal";
+
+		ResultActions result = mockMvc
+				.perform(get("/api/v1/products").param("active", "false").accept(MediaType.APPLICATION_JSON));
+
+		result.andExpect(status().isOk());		
+		result.andExpect(jsonPath("$.content.length()").value(productsListExpectedLength));
+		result.andExpect(jsonPath("$.content[0].id").value(firstProductExpectedId));
+		result.andExpect(jsonPath("$.content[0].name").value(firstProductExpectedName));
+		
+	}
+	
+	@Test
+	public void findAllShouldReturnPageFilteredByGivenCategories() throws Exception {
+		
+		final Integer productsListExpectedLength = 1;
+		final Long firstProductExpectedId = 3L;
+		final String firstProductExpectedName = "Halter 4kg";
+
+		ResultActions result = mockMvc
+				.perform(get("/api/v1/products").param("categoryIds", "3").accept(MediaType.APPLICATION_JSON));
+
+		result.andExpect(status().isOk());		
+		result.andExpect(jsonPath("$.content.length()").value(productsListExpectedLength));
+		result.andExpect(jsonPath("$.content[0].id").value(firstProductExpectedId));
+		result.andExpect(jsonPath("$.content[0].name").value(firstProductExpectedName));
+		
 	}
 
 }
