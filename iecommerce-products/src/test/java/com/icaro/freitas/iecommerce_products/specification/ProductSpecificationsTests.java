@@ -29,7 +29,7 @@ public class ProductSpecificationsTests {
 	}
 
 	@Test
-	void nameContains_shouldReturnMatchingProduct() {
+	void nameContainsShouldReturnMatchingProduct() {
 		var spec = ProductSpecifications.nameContains("asus");
 		List<Product> result = repository.findAll(spec);
 		assertThat(result).containsOnly(product);
@@ -48,9 +48,7 @@ public class ProductSpecificationsTests {
 		var spec = ProductSpecifications.categoryIdIn(List.of(categoryId));
 		List<Product> result = repository.findAll(spec);
 		assertThat(result)
-	    .allSatisfy(p -> assertThat(p.getCategories())
-	        .extracting(Category::getId)
-	        .contains(categoryId));
+				.allSatisfy(p -> assertThat(p.getCategories()).extracting(Category::getId).contains(categoryId));
 	}
 
 	@Test
@@ -58,9 +56,7 @@ public class ProductSpecificationsTests {
 		var testPrice = new BigDecimal("2000");
 		var spec = ProductSpecifications.minPrice(testPrice);
 		List<Product> result = repository.findAll(spec);
-		assertThat(result)
-	    .allSatisfy(p -> assertThat(p.getPrice())	        
-	        .isGreaterThanOrEqualTo(testPrice));
+		assertThat(result).allSatisfy(p -> assertThat(p.getPrice()).isGreaterThanOrEqualTo(testPrice));
 	}
 
 	@Test
@@ -68,9 +64,7 @@ public class ProductSpecificationsTests {
 		var testPrice = new BigDecimal("3000");
 		var spec = ProductSpecifications.maxPrice(testPrice);
 		List<Product> result = repository.findAll(spec);
-		assertThat(result)
-	    .allSatisfy(p -> assertThat(p.getPrice())	        
-	        .isLessThanOrEqualTo(testPrice));
+		assertThat(result).allSatisfy(p -> assertThat(p.getPrice()).isLessThanOrEqualTo(testPrice));
 	}
 
 	@Test
@@ -78,9 +72,7 @@ public class ProductSpecificationsTests {
 		var testQuantity = 20;
 		var spec = ProductSpecifications.minQuantity(testQuantity);
 		List<Product> result = repository.findAll(spec);
-		assertThat(result)
-	    .allSatisfy(p -> assertThat(p.getQuantity())	        
-	        .isGreaterThanOrEqualTo(testQuantity));
+		assertThat(result).allSatisfy(p -> assertThat(p.getQuantity()).isGreaterThanOrEqualTo(testQuantity));
 	}
 
 	@Test
@@ -88,9 +80,7 @@ public class ProductSpecificationsTests {
 		var testQuantity = 51;
 		var spec = ProductSpecifications.maxQuantity(testQuantity);
 		List<Product> result = repository.findAll(spec);
-		assertThat(result)
-	    .allSatisfy(p -> assertThat(p.getQuantity())	        
-	        .isLessThanOrEqualTo(testQuantity));
+		assertThat(result).allSatisfy(p -> assertThat(p.getQuantity()).isLessThanOrEqualTo(testQuantity));
 	}
 
 	@Test
@@ -98,9 +88,7 @@ public class ProductSpecificationsTests {
 		var activeValue = true;
 		var spec = ProductSpecifications.isActive(activeValue);
 		List<Product> result = repository.findAll(spec);
-		assertThat(result)
-	    .allSatisfy(p -> assertThat(p.getActive())	        
-	        .isEqualTo(activeValue));
+		assertThat(result).allSatisfy(p -> assertThat(p.getActive()).isEqualTo(activeValue));
 	}
 
 	@Test
@@ -108,9 +96,7 @@ public class ProductSpecificationsTests {
 		var inactiveValue = false;
 		var spec = ProductSpecifications.isActive(inactiveValue);
 		List<Product> result = repository.findAll(spec);
-		assertThat(result)
-	    .allSatisfy(p -> assertThat(p.getActive())	        
-	        .isEqualTo(inactiveValue));
+		assertThat(result).allSatisfy(p -> assertThat(p.getActive()).isEqualTo(inactiveValue));
 	}
 
 }

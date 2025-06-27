@@ -62,8 +62,7 @@ public class ProductServiceImplTests {
 		Assertions.assertEquals(list.size(), result.getTotalElements(), "Total elements mismatch");
 		Assertions.assertEquals(expected.getId(), actual.getId(), "Product ID mismatch");
 		Assertions.assertEquals(expected.getName(), actual.getName(), "Product name mismatch");
-		Assertions.assertTrue(expectedCategoryNames.contains(actualCategoryName),
-				"Expected category list to contain: " + actualCategoryName);
+		Assertions.assertTrue(expectedCategoryNames.contains(actualCategoryName));
 	}
 
 }
