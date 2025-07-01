@@ -96,7 +96,7 @@ public class ProductServiceImplIT {
 
 	@ParameterizedTest
 	@MethodSource("filterProvider")
-	void findAllshouldReturnExpectedProductWithGivenFilter(ProductFilterDto dto, int expectedSize, Long expectedId,
+	void findAllshouldReturnExpectedProductDtoWithGivenFilter(ProductFilterDto dto, int expectedSize, Long expectedId,
 			String expectedName) {
 		assertFilteredResult(dto, expectedSize, expectedId, expectedName);
 	}
