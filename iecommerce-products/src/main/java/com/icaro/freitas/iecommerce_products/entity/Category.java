@@ -22,7 +22,7 @@ import lombok.ToString;
 @Table(name = "tb_category")
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "products")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Category extends BaseEntity {

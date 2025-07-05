@@ -14,8 +14,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import com.icaro.freitas.iecommerce_products.dto.ProductDto;
+import com.icaro.freitas.iecommerce_products.dto.ProductFilterDto;
 import com.icaro.freitas.iecommerce_products.entity.Category;
 import com.icaro.freitas.iecommerce_products.entity.Product;
 import com.icaro.freitas.iecommerce_products.repository.ProductRepository;
@@ -34,33 +36,33 @@ public class ProductServiceImplTests {
 	private List<Product> list;
 	private Page<Product> page;
 
+	@SuppressWarnings("unchecked")
 	@BeforeEach
 	private void setUp() throws Exception {
 
 		list = ProductFactory.createProductList();
 		page = new PageImpl<>(list);
-		Mockito.when(repository.findAll(Mockito.any(Pageable.class))).thenReturn(page);
+		Mockito.when(repository.findAll((Specification<Product>) Mockito.any(Specification.class),
+				Mockito.any(Pageable.class))).thenReturn(page);
 	}
 
 	@Test
 	public void findAllShouldReturnProductDtoPagedList() {
 		Pageable pageable = PageRequest.of(0, 10);
 
-		Page<ProductDto> result = service.findAll(pageable);
+		ProductFilterDto filter = new ProductFilterDto();
+
+		Page<ProductDto> result = service.findAll(filter, pageable);
 		Product expected = list.get(0);
 		ProductDto actual = result.getContent().get(0);
 		String actualCategoryName = actual.getCategories().get(0).getName();
-		
-		List<String> expectedCategoryNames = expected.getCategories()
-                .stream()
-                .map(Category::getName)
-                .toList();
+
+		List<String> expectedCategoryNames = expected.getCategories().stream().map(Category::getName).toList();
 
 		Assertions.assertEquals(list.size(), result.getTotalElements(), "Total elements mismatch");
 		Assertions.assertEquals(expected.getId(), actual.getId(), "Product ID mismatch");
 		Assertions.assertEquals(expected.getName(), actual.getName(), "Product name mismatch");
-		Assertions.assertTrue(expectedCategoryNames.contains(actualCategoryName),
-				"Expected category list to contain: " + actualCategoryName);
+		Assertions.assertTrue(expectedCategoryNames.contains(actualCategoryName));
 	}
 
 }

@@ -4,9 +4,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.icaro.freitas.iecommerce_products.dto.ProductDto;
+import com.icaro.freitas.iecommerce_products.dto.ProductFilterDto;
 
 public interface IProductService {
 	
-	Page<ProductDto> findAll(Pageable pageable);
+	Page<ProductDto> findAll(ProductFilterDto filter,Pageable pageable);
 
 }
