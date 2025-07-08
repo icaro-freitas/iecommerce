@@ -6,9 +6,11 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import com.icaro.freitas.iecommerce_products.dto.ProductDto;
 import com.icaro.freitas.iecommerce_products.dto.ProductFilterDto;
 import com.icaro.freitas.iecommerce_products.entity.Product;
+import com.icaro.freitas.iecommerce_products.exception.ResourceNotFoundException;
 import com.icaro.freitas.iecommerce_products.mapper.ProductMapper;
 import com.icaro.freitas.iecommerce_products.repository.ProductRepository;
 import com.icaro.freitas.iecommerce_products.service.IProductService;
@@ -36,6 +38,14 @@ public class ProductServiceImpl implements IProductService {
 
 		Page<Product> page = repository.findAll(spec, pageable);
 		return page.map(ProductMapper::toDto);
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public ProductDto findById(Long id) {
+		Product product = repository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
+		return ProductMapper.toDto(product);
 	}
 
 }

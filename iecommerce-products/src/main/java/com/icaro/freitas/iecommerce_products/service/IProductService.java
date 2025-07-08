@@ -9,5 +9,7 @@ import com.icaro.freitas.iecommerce_products.dto.ProductFilterDto;
 public interface IProductService {
 	
 	Page<ProductDto> findAll(ProductFilterDto filter,Pageable pageable);
+	
+	ProductDto findById(Long id);
 
 }
