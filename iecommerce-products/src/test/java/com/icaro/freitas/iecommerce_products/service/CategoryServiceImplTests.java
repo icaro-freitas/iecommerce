@@ -10,11 +10,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.icaro.freitas.iecommerce_products.dto.CategoryDto;
 import com.icaro.freitas.iecommerce_products.entity.Category;
@@ -22,7 +22,7 @@ import com.icaro.freitas.iecommerce_products.repository.CategoryRepository;
 import com.icaro.freitas.iecommerce_products.service.impl.CategoryServiceImpl;
 import com.icaro.freitas.iecommerce_products.testutil.CategoryFactory;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
 public class CategoryServiceImplTests {
 
 	@Mock
