@@ -23,7 +23,7 @@ import jakarta.transaction.Transactional;
 
 @SpringBootTest
 @Transactional
-public class ProductServiceImplIT {
+public class ProductServiceIT {
 
 	@Autowired
 	private IProductService service;
