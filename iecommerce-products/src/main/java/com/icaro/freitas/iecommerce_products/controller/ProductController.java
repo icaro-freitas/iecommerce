@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,22 +27,27 @@ import lombok.AllArgsConstructor;
 @RestController
 @RequestMapping(path = "api/v1/products", produces = { MediaType.APPLICATION_JSON_VALUE })
 @AllArgsConstructor
-public class ProductController {	
-	
+public class ProductController {
+
 	private IProductService service;
-	
+
 	@Operation(summary = "Fetch Products page REST API", description = "REST API to fetch a products page with sort option")
-	@ApiResponses({ 
-		    @ApiResponse(responseCode = "200", description = "HTTP Status OK"),
-		    @ApiResponse(responseCode = "400", description = "HTTP Status Internal Bad Request", content = @Content(schema = @Schema(implementation = StandardErrorDto.class))),
+	@ApiResponses({ @ApiResponse(responseCode = "200", description = "HTTP Status OK"),
+			@ApiResponse(responseCode = "400", description = "HTTP Status Internal Bad Request", content = @Content(schema = @Schema(implementation = StandardErrorDto.class))),
 			@ApiResponse(responseCode = "500", description = "HTTP Status Internal Server Error", content = @Content(schema = @Schema(implementation = StandardErrorDto.class))) })
 	@GetMapping
 	public ResponseEntity<Page<ProductDto>> findAll(@ModelAttribute ProductFilterDto filter, Pageable pageable) {
-		
+
 		Page<ProductDto> products = service.findAll(filter, pageable);
-		
+
 		return ResponseEntity.ok(products);
-		
+
+	}
+
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<ProductDto> findById(@PathVariable Long id) {
+		ProductDto dto = service.findById(id);
+		return ResponseEntity.ok(dto);
 	}
 
 }
