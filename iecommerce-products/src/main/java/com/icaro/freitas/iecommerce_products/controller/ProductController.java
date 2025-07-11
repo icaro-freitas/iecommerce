@@ -23,7 +23,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 
-@Tag(name = "CRUD REST APIs for Products in Iecommerce", description = "CRUD REST APIs in Iecommerce to CREATE, UPDATE, FETCH AND DELETE product details")
+@Tag(name = "Product API", description = "REST API endpoints in Iecommerce to CREATE, UPDATE, FETCH, and DELETE product details")
 @RestController
 @RequestMapping(path = "api/v1/products", produces = { MediaType.APPLICATION_JSON_VALUE })
 @AllArgsConstructor
@@ -31,7 +31,7 @@ public class ProductController {
 
 	private IProductService service;
 
-	@Operation(summary = "Fetch Products page REST API", description = "REST API to fetch a products page with sort option")
+	@Operation(summary = "Fetch Products paged", description = "Fetch a products page with sort and filtering options")
 	@ApiResponses({ @ApiResponse(responseCode = "200", description = "HTTP Status OK"),
 			@ApiResponse(responseCode = "400", description = "HTTP Status Internal Bad Request", content = @Content(schema = @Schema(implementation = StandardErrorDto.class))),
 			@ApiResponse(responseCode = "500", description = "HTTP Status Internal Server Error", content = @Content(schema = @Schema(implementation = StandardErrorDto.class))) })
@@ -44,6 +44,11 @@ public class ProductController {
 
 	}
 
+	@Operation(summary = "Fetch product by ID", description = "Fetch a product from the system using its ID")
+	@ApiResponses({ @ApiResponse(responseCode = "200", description = "HTTP Status OK"),
+			@ApiResponse(responseCode = "400", description = "HTTP Status Internal Bad Request", content = @Content(schema = @Schema(implementation = StandardErrorDto.class))),
+			@ApiResponse(responseCode = "404", description = "HTTP Status Internal Not Found", content = @Content(schema = @Schema(implementation = StandardErrorDto.class))),
+			@ApiResponse(responseCode = "500", description = "HTTP Status Internal Server Error", content = @Content(schema = @Schema(implementation = StandardErrorDto.class))) })
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<ProductDto> findById(@PathVariable Long id) {
 		ProductDto dto = service.findById(id);
