@@ -18,26 +18,28 @@ public class ControllerExceptionHandler {
 	
 	@ExceptionHandler(PropertyReferenceException.class)
     public ResponseEntity<StandardErrorDto> propertyReference(PropertyReferenceException ex, HttpServletRequest request) {
+		final HttpStatus status = HttpStatus.BAD_REQUEST;
         StandardErrorDto err = new StandardErrorDto(
             Instant.now(),
-            HttpStatus.BAD_REQUEST.value(),
+            status.value(),
             "Bad Request",
             "Invalid property given: " + ex.getPropertyName(),
             request.getRequestURI()
         );
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+        return ResponseEntity.status(status).body(err);
     }
 	
 	@ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<StandardErrorDto> resourceNotFound(ResourceNotFoundException ex, HttpServletRequest request) {
+		final HttpStatus status = HttpStatus.NOT_FOUND;
         StandardErrorDto err = new StandardErrorDto(
             Instant.now(),
-            HttpStatus.NOT_FOUND.value(),
+            status.value(),
             "Not Found",
             "Resource not found",
             request.getRequestURI()
         );
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+        return ResponseEntity.status(status).body(err);
     }
 
 }
