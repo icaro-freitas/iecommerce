@@ -17,7 +17,7 @@ import jakarta.transaction.Transactional;
 
 @SpringBootTest
 @Transactional
-public class CategoryServiceImplIT {
+public class CategoryServiceIT {
 	
 	@Autowired
 	private ICategoryService service;

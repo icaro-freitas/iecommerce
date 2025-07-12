@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -89,6 +90,26 @@ public class ProductRepositoryTests {
 
 		Assertions.assertFalse(result.isEmpty());
 		Assertions.assertEquals(expectedName, firstProduct.getName());
+	}
+
+	@Test
+	public void findByIdShouldReturnProductDtoWhenIdExists() {
+		Long existingProductId = 1L;
+		Optional<Product> result = repository.findById(existingProductId);
+
+		Product product = result.get();
+
+		Assertions.assertNotNull(existingProductId);
+		Assertions.assertEquals(product.getId(), existingProductId);
+	}
+
+	@Test
+	public void findByIdShouldReturnEmptyOptionalResultWhenIdDoesNotExist() {
+		Long nonExistingProductId = 99L;
+		Optional<Product> result = repository.findById(nonExistingProductId);
+
+		Assertions.assertTrue(result.isEmpty());
+
 	}
 
 }

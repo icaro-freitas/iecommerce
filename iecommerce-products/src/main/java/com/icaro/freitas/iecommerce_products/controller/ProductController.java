@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,26 +23,36 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 
-@Tag(name = "CRUD REST APIs for Products in Iecommerce", description = "CRUD REST APIs in Iecommerce to CREATE, UPDATE, FETCH AND DELETE product details")
+@Tag(name = "Product API", description = "REST API endpoints in Iecommerce to CREATE, UPDATE, FETCH, and DELETE product details")
 @RestController
 @RequestMapping(path = "api/v1/products", produces = { MediaType.APPLICATION_JSON_VALUE })
 @AllArgsConstructor
-public class ProductController {	
-	
+public class ProductController {
+
 	private IProductService service;
-	
-	@Operation(summary = "Fetch Products page REST API", description = "REST API to fetch a products page with sort option")
-	@ApiResponses({ 
-		    @ApiResponse(responseCode = "200", description = "HTTP Status OK"),
-		    @ApiResponse(responseCode = "400", description = "HTTP Status Internal Bad Request", content = @Content(schema = @Schema(implementation = StandardErrorDto.class))),
+
+	@Operation(summary = "Fetch Products paged", description = "Fetch a products page with sort and filtering options")
+	@ApiResponses({ @ApiResponse(responseCode = "200", description = "HTTP Status OK"),
+			@ApiResponse(responseCode = "400", description = "HTTP Status Internal Bad Request", content = @Content(schema = @Schema(implementation = StandardErrorDto.class))),
 			@ApiResponse(responseCode = "500", description = "HTTP Status Internal Server Error", content = @Content(schema = @Schema(implementation = StandardErrorDto.class))) })
 	@GetMapping
 	public ResponseEntity<Page<ProductDto>> findAll(@ModelAttribute ProductFilterDto filter, Pageable pageable) {
-		
+
 		Page<ProductDto> products = service.findAll(filter, pageable);
-		
+
 		return ResponseEntity.ok(products);
-		
+
+	}
+
+	@Operation(summary = "Fetch product by ID", description = "Fetch a product from the system using its ID")
+	@ApiResponses({ @ApiResponse(responseCode = "200", description = "HTTP Status OK"),
+			@ApiResponse(responseCode = "400", description = "HTTP Status Internal Bad Request", content = @Content(schema = @Schema(implementation = StandardErrorDto.class))),
+			@ApiResponse(responseCode = "404", description = "HTTP Status Internal Not Found", content = @Content(schema = @Schema(implementation = StandardErrorDto.class))),
+			@ApiResponse(responseCode = "500", description = "HTTP Status Internal Server Error", content = @Content(schema = @Schema(implementation = StandardErrorDto.class))) })
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<ProductDto> findById(@PathVariable Long id) {
+		ProductDto dto = service.findById(id);
+		return ResponseEntity.ok(dto);
 	}
 
 }

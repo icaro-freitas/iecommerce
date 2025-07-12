@@ -26,6 +26,9 @@ public class ProductControllerIT {
 
 	@Autowired
 	private MockMvc mockMvc;
+	
+	private Long existingProductId = 1L;
+	private Long nonExistingProductId = 99L;
 
 	@Test
 	public void findAllShouldReturnProductDtoPage() throws Exception {
@@ -120,6 +123,34 @@ public class ProductControllerIT {
 		result.andExpect(jsonPath("$.content.length()").value(expectedSize));
 		result.andExpect(jsonPath("$.content[0].id").value(expectedId));
 		result.andExpect(jsonPath("$.content[0].name").value(expectedName));
+	}
+	
+	@Test
+	public void findByIdShouldReturnProductDtoWhenIdExists() throws Exception {
+
+		final String firstProductExpectedName = "Notebook asus vivobook";
+		final BigDecimal firstProductExpectedPrice = new BigDecimal("2867.0");
+		final String firstProductExpectedImageUrl = "img/notebook-asus-vivobook";
+		final String firstProductExpectedFirstCategoryName = "Eletrônicos";
+
+		ResultActions result = mockMvc
+				.perform(get("/api/v1/products/{id}", existingProductId).accept(MediaType.APPLICATION_JSON));
+
+		result.andExpect(status().isOk());
+		result.andExpect(jsonPath("$.id").value(existingProductId));
+		result.andExpect(jsonPath("$.name").value(firstProductExpectedName));
+		result.andExpect(jsonPath("$.price").value(firstProductExpectedPrice));
+		result.andExpect(jsonPath("$.imageUrl").value(firstProductExpectedImageUrl));
+		result.andExpect(jsonPath("$.categories[0].name").value(firstProductExpectedFirstCategoryName));
+	}
+	
+	@Test
+	public void findByIdShouldReturnNotFoundWhenIdDoesNotExist() throws Exception {
+
+		ResultActions result = mockMvc.perform(get("/api/v1/products/{id}", nonExistingProductId).accept(MediaType.APPLICATION_JSON));
+
+		result.andExpect(status().isNotFound());
+
 	}
 
 }

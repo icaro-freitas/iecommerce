@@ -17,13 +17,14 @@ import org.springframework.data.domain.Sort;
 
 import com.icaro.freitas.iecommerce_products.dto.ProductDto;
 import com.icaro.freitas.iecommerce_products.dto.ProductFilterDto;
+import com.icaro.freitas.iecommerce_products.exception.ResourceNotFoundException;
 import com.icaro.freitas.iecommerce_products.service.IProductService;
 
 import jakarta.transaction.Transactional;
 
 @SpringBootTest
 @Transactional
-public class ProductServiceImplIT {
+public class ProductServiceIT {
 
 	@Autowired
 	private IProductService service;
@@ -128,6 +129,23 @@ public class ProductServiceImplIT {
 		Assertions.assertEquals(expectedSize, productList.size());
 		Assertions.assertEquals(expectedId, firstProduct.getId());
 		Assertions.assertEquals(expectedName, firstProduct.getName());
+	}
+	
+	@Test
+	public void findByIdShouldReturnProductDtoWhenIdExists() {
+		Long existingProductId = 1L;
+		ProductDto result = service.findById(existingProductId);
+
+		Assertions.assertNotNull(existingProductId);
+		Assertions.assertEquals(result.getId(), existingProductId);
+	}
+
+	@Test
+	public void findByIdShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() {
+		Long nonExistingProductId = 99L;
+		Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+			service.findById(nonExistingProductId);
+		});
 	}
 
 }

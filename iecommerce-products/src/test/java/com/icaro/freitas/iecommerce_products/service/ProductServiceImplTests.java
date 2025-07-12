@@ -1,6 +1,7 @@
 package com.icaro.freitas.iecommerce_products.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,22 +10,23 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.icaro.freitas.iecommerce_products.dto.ProductDto;
 import com.icaro.freitas.iecommerce_products.dto.ProductFilterDto;
 import com.icaro.freitas.iecommerce_products.entity.Category;
 import com.icaro.freitas.iecommerce_products.entity.Product;
+import com.icaro.freitas.iecommerce_products.exception.ResourceNotFoundException;
 import com.icaro.freitas.iecommerce_products.repository.ProductRepository;
 import com.icaro.freitas.iecommerce_products.service.impl.ProductServiceImpl;
 import com.icaro.freitas.iecommerce_products.testutil.ProductFactory;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
 public class ProductServiceImplTests {
 
 	@Mock
@@ -32,18 +34,31 @@ public class ProductServiceImplTests {
 
 	@InjectMocks
 	private ProductServiceImpl service;
-
+	
+	
 	private List<Product> list;
 	private Page<Product> page;
+	private Long existingProductId;
+	private Long nonExistingProductId;
+	private Product product;	
 
 	@SuppressWarnings("unchecked")
 	@BeforeEach
 	private void setUp() throws Exception {
+		existingProductId = 1L;
+		nonExistingProductId = 2L;
+		product= ProductFactory.createProduct();
 
 		list = ProductFactory.createProductList();
 		page = new PageImpl<>(list);
+
+		
 		Mockito.when(repository.findAll((Specification<Product>) Mockito.any(Specification.class),
-				Mockito.any(Pageable.class))).thenReturn(page);
+				Mockito.any(Pageable.class))).thenReturn(page);				
+		
+		Mockito.when(repository.findById(existingProductId)).thenReturn(Optional.of(product));
+		Mockito.when(repository.findById(nonExistingProductId)).thenReturn(Optional.empty());
+		
 	}
 
 	@Test
@@ -63,6 +78,22 @@ public class ProductServiceImplTests {
 		Assertions.assertEquals(expected.getId(), actual.getId(), "Product ID mismatch");
 		Assertions.assertEquals(expected.getName(), actual.getName(), "Product name mismatch");
 		Assertions.assertTrue(expectedCategoryNames.contains(actualCategoryName));
+	}
+	
+	@Test
+	public void findByIdShouldReturnProductDtoWhenIdExists() {
+		ProductDto result = service.findById(existingProductId);
+
+		Assertions.assertNotNull(existingProductId);
+		Assertions.assertEquals(result.getId(), existingProductId);
+	}
+
+	@Test
+	public void findByIdShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() {
+
+		Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+			service.findById(nonExistingProductId);
+		});
 	}
 
 }
