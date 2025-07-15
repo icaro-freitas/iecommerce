@@ -16,6 +16,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +24,7 @@ import org.springframework.data.domain.Sort;
 
 import com.icaro.freitas.iecommerce_products.entity.Category;
 import com.icaro.freitas.iecommerce_products.entity.Product;
+import com.icaro.freitas.iecommerce_products.testutil.ProductFactory;
 
 @DataJpaTest
 public class ProductRepositoryTests {
@@ -111,5 +113,36 @@ public class ProductRepositoryTests {
 		Assertions.assertTrue(result.isEmpty());
 
 	}
+	
+	@Test
+	public void saveShouldPersistWithAutoIncrementWhenIdIsNull() {
+		
+		final int countTotalProducts = 8;
+
+		Product product = ProductFactory.createProduct();
+		product.setId(null);
+		product.setSlug("test-slug");
+
+		product = repository.save(product);
+
+		Assertions.assertNotNull(product.getId());
+		Assertions.assertEquals(countTotalProducts + 1, product.getId());
+	}
+	
+	@Test
+	public void saveShouldThrowDataIntegrityViolationWhenRepetitiveSlugIsGiven() {		
+		
+		final String repetitiveSlug = "notebook-asus-vivobook";
+
+		Product product = ProductFactory.createProduct();
+		product.setId(null);	
+		product.setSlug(repetitiveSlug);		
+
+		Assertions.assertThrows(DataIntegrityViolationException.class, () -> {
+			repository.save(product);
+		});
+		
+	}
+
 
 }
