@@ -11,5 +11,7 @@ public interface IProductService {
 	Page<ProductDto> findAll(ProductFilterDto filter,Pageable pageable);
 	
 	ProductDto findById(Long id);
+	
+	ProductDto createProduct(ProductDto productDto);
 
 }

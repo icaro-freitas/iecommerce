@@ -21,4 +21,15 @@ public class ProductMapper {
 				product.getQuantity(), product.getImageUrl(), product.getSlug(), product.getActive(), categoryDtos);
 	}
 
+	public static Product fromDto(ProductDto productDto) {
+
+		List<CategoryDto> categoryDtos = productDto.getCategories();
+
+		Set<Category> categories = categoryDtos.stream().map(CategoryMapper::fromDto).collect(Collectors.toSet());
+
+		return new Product(productDto.getId(), productDto.getName(), productDto.getDescription(), productDto.getPrice(),
+				productDto.getQuantity(), productDto.getImageUrl(), productDto.getSlug(), productDto.getActive(),
+				categories);
+	}
+
 }
