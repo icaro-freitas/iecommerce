@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.icaro.freitas.iecommerce_products.dto.CategoryDto;
+import com.icaro.freitas.iecommerce_products.dto.ProductCreateDto;
 import com.icaro.freitas.iecommerce_products.dto.ProductDto;
 import com.icaro.freitas.iecommerce_products.entity.Category;
 import com.icaro.freitas.iecommerce_products.entity.Product;
@@ -30,6 +31,13 @@ public class ProductMapper {
 		return new Product(productDto.getId(), productDto.getName(), productDto.getDescription(), productDto.getPrice(),
 				productDto.getQuantity(), productDto.getImageUrl(), productDto.getSlug(), productDto.getActive(),
 				categories);
+	}
+
+	public static Product fromCreateDto(ProductCreateDto productCreateDto, Set<Category> categories) {
+
+		return new Product(null, productCreateDto.getName(), productCreateDto.getDescription(),
+				productCreateDto.getPrice(), productCreateDto.getQuantity(), productCreateDto.getImageUrl(),
+				productCreateDto.getSlug(), productCreateDto.getActive(), categories);
 	}
 
 }

@@ -3,6 +3,7 @@ package com.icaro.freitas.iecommerce_products.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.icaro.freitas.iecommerce_products.dto.ProductCreateDto;
 import com.icaro.freitas.iecommerce_products.dto.ProductDto;
 import com.icaro.freitas.iecommerce_products.dto.ProductFilterDto;
 
@@ -12,6 +13,6 @@ public interface IProductService {
 	
 	ProductDto findById(Long id);
 	
-	ProductDto createProduct(ProductDto productDto);
+	ProductDto createProduct(ProductCreateDto productDto);
 
 }
