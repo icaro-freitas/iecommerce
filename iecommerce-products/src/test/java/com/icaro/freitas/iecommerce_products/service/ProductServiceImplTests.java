@@ -1,5 +1,7 @@
 package com.icaro.freitas.iecommerce_products.service;
 
+import static org.mockito.ArgumentMatchers.any;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -17,11 +19,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import com.icaro.freitas.iecommerce_products.dto.ProductCreateDto;
 import com.icaro.freitas.iecommerce_products.dto.ProductDto;
 import com.icaro.freitas.iecommerce_products.dto.ProductFilterDto;
 import com.icaro.freitas.iecommerce_products.entity.Category;
 import com.icaro.freitas.iecommerce_products.entity.Product;
 import com.icaro.freitas.iecommerce_products.exception.ResourceNotFoundException;
+import com.icaro.freitas.iecommerce_products.repository.CategoryRepository;
 import com.icaro.freitas.iecommerce_products.repository.ProductRepository;
 import com.icaro.freitas.iecommerce_products.service.impl.ProductServiceImpl;
 import com.icaro.freitas.iecommerce_products.testutil.ProductFactory;
@@ -31,6 +35,9 @@ public class ProductServiceImplTests {
 
 	@Mock
 	private ProductRepository repository;
+	
+	@Mock
+	private CategoryRepository categoryRepository;
 
 	@InjectMocks
 	private ProductServiceImpl service;
@@ -41,6 +48,7 @@ public class ProductServiceImplTests {
 	private Long existingProductId;
 	private Long nonExistingProductId;
 	private Product product;	
+	private ProductCreateDto productCreateDto;
 
 	@SuppressWarnings("unchecked")
 	@BeforeEach
@@ -51,13 +59,18 @@ public class ProductServiceImplTests {
 
 		list = ProductFactory.createProductList();
 		page = new PageImpl<>(list);
-
+		
+		productCreateDto = ProductFactory.createProductCreateDto();
 		
 		Mockito.when(repository.findAll((Specification<Product>) Mockito.any(Specification.class),
 				Mockito.any(Pageable.class))).thenReturn(page);				
 		
 		Mockito.when(repository.findById(existingProductId)).thenReturn(Optional.of(product));
 		Mockito.when(repository.findById(nonExistingProductId)).thenReturn(Optional.empty());
+		
+		Mockito.when(repository.save(any())).thenReturn(product);
+		
+		Mockito.when(categoryRepository.findAllById(any())).thenReturn(product.getCategories().stream().toList());
 		
 	}
 
@@ -94,6 +107,14 @@ public class ProductServiceImplTests {
 		Assertions.assertThrows(ResourceNotFoundException.class, () -> {
 			service.findById(nonExistingProductId);
 		});
+	}
+	
+	@Test
+	public void createProductShouldReturnProductDto() {
+		ProductDto result = service.createProduct(productCreateDto);
+
+		Assertions.assertNotNull(result);
+		Assertions.assertEquals(result.getId(), product.getId());
 	}
 
 }

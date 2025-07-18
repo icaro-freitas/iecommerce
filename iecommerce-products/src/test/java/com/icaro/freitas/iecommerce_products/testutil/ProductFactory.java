@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import com.icaro.freitas.iecommerce_products.dto.ProductCreateDto;
 import com.icaro.freitas.iecommerce_products.entity.Category;
 import com.icaro.freitas.iecommerce_products.entity.Product;
 
@@ -20,28 +21,42 @@ public class ProductFactory {
 
 		return product;
 	}
-	
+
+	public static ProductCreateDto createProductCreateDto() {
+
+		Product product = createProduct();
+
+		Set<Category> categories = product.getCategories();
+
+		List<Long> categoryIds = categories.stream().map(x -> x.getId()).toList();
+
+		ProductCreateDto productCreateDto = new ProductCreateDto(product.getName(), product.getDescription(),
+				product.getPrice(), product.getQuantity(), product.getImageUrl(), product.getSlug(),
+				product.getActive(), categoryIds);
+
+		return productCreateDto;
+	}
+
 	public static List<Product> createProductList() {
-		
+
 		Set<Category> categories1 = Set.of(new Category(1L, "Eletrônicos"));
-		
+
 		Set<Category> categories2 = Set.of(new Category(2L, "Livros"));
-		
+
 		Set<Category> categories3 = Set.of(new Category(3L, "Esportes"));
-		
+
 		Product product1 = new Product(1L, "Notebook asus vivobook", "É leve. É compacto. É o ASUS",
 				new BigDecimal("2867.00"), 50, "img/notebook-asus-vivobook", "notebook-asus-vivobook", true,
 				categories1);
-		
-		Product product2 = new Product(2L, "As Crônicas de Nárnia", "As Crônicas de Nárnia – Coleção de Luxo: O Leão, a Feiticeira e o Guarda-Roupa",
-				new BigDecimal("41.76"), 100, "img/as-cronicas-de-narnia", "as-cronicas-de-narnia", true,
-				categories2);
-		
+
+		Product product2 = new Product(2L, "As Crônicas de Nárnia",
+				"As Crônicas de Nárnia – Coleção de Luxo: O Leão, a Feiticeira e o Guarda-Roupa",
+				new BigDecimal("41.76"), 100, "img/as-cronicas-de-narnia", "as-cronicas-de-narnia", true, categories2);
+
 		Product product3 = new Product(3L, "Halter 4kg", "É a escolha ideal para quem busca qualidade e segurança",
-				new BigDecimal("56.20"), 200, "img/halter-4k", "halter-4k", true,
-				categories3);
-		
-		return new ArrayList<>(List.of(product1, product2, product3));		
+				new BigDecimal("56.20"), 200, "img/halter-4k", "halter-4k", true, categories3);
+
+		return new ArrayList<>(List.of(product1, product2, product3));
 	}
-	
+
 }
