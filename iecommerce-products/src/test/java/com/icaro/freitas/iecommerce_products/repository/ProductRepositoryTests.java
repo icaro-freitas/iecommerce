@@ -143,6 +143,20 @@ public class ProductRepositoryTests {
 		});
 		
 	}
+	
+	@Test
+	public void saveShouldThrowDataIntegrityViolationWhenActiveIsNull() {			
+		
+
+		Product product = ProductFactory.createProduct();
+		product.setId(null);	
+		product.setActive(null);	
+
+		Assertions.assertThrows(DataIntegrityViolationException.class, () -> {
+			repository.save(product);
+		});
+		
+	}
 
 
 }
